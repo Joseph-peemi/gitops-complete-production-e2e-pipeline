@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: complete-production-e2e-service
+spec:
+  selector:
+    app: complete-production-e2e-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
