@@ -29,7 +29,7 @@ spec:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 40
             periodSeconds: 10
             failureThreshold: 3
 
@@ -37,18 +37,22 @@ spec:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 90
             periodSeconds: 20
             failureThreshold: 3
 
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-XX:MaxRAMPercentage=75.0"
+              value: >
+                -Xms256m
+                -Xmx768m
+                -XX:+UseContainerSupport
+                -XX:+ExitOnOutOfMemoryError
 
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              cpu: 500m
+              cpu: 250m
               memory: 512Mi
+            limits:
+              cpu: 1
+              memory: 1024Mi
