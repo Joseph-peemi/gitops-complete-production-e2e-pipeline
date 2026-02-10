@@ -5,7 +5,7 @@ metadata:
   labels:
     app: complete-production-e2e-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: complete-production-e2e-app
@@ -19,7 +19,10 @@ spec:
         image: abuchijoe/complete-production-e2e-pipeline:latest
         resources:
           limits:
-            memory: "256Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "100m"
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
         ports:
         - containerPort: 8080
