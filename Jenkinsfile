@@ -11,15 +11,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-    triggers {
-        GenericTrigger(
-            genericVariables: [[key: 'IMAGE_TAG', value: '$.image_tag']],
-            causeString: 'Triggered by CI Pipeline',
-            token: 'gitops-token',
-            printContributedVariables: true,
-            printPostContent: true
-        )
-    }
     stages {
         stage("Cleanup Workspace") {
             steps { cleanWs() }
