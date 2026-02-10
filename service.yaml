@@ -1,12 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: >-
+      gitops-complete-production-e2e-pipeline:/Service:default/complete-production-e2e-service
   name: complete-production-e2e-service
+  namespace: default
 spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: complete-production-e2e-app
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
   type: LoadBalancer
