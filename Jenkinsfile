@@ -41,13 +41,13 @@ pipeline {
             steps {
                 script {
                     sh """
-                        git config user.name "${GIT_USER}"
+                        git config user.name "Joseph-peemi"
                         git config user.email "peemijoe9522@gmail.com"
                         git add deployment.yaml
                         git commit -m "Updated deployment image to ${params.IMAGE_TAG}" || echo "No changes to commit"
                     """
-                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                        sh "git push https://${GIT_USER}:${GIT_PASS}@github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git HEAD:main"
+                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh '''git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git HEAD:main'''
                     }
                 }
             }
