@@ -8,6 +8,11 @@ pipeline {
         GIT_CREDENTIALS = "github"
         GIT_USER = "Joseph-peemi"
     }
+    properties([
+        pipelineTriggers([
+            authenticationToken('gitops-token')
+        ])
+    ])
     stages {
         stage("Cleanup Workspace") {
             steps { cleanWs() }
