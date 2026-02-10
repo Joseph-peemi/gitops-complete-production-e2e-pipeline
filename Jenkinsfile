@@ -1,36 +1,35 @@
 pipeline {
-    agent {
-        label "jenkins-agent"
-    }
-    tools {
-        jdk 'Java17'
-        maven 'Maven3'
+    agent { label "jenkins-agent" }
+    parameters {
+        string(name: 'IMAGE_TAG', defaultValue: 'abuchijoe/complete-production-e2e-pipeline:latest', description: 'Docker image tag to deploy')
     }
     environment {
         APP_NAME = "complete-production-e2e-pipeline"
-        DOCKER_USER = "abuchijoe"
-        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
-        GIT_USER = "Joseph-peemi"
         GIT_CREDENTIALS = "github"
+        GIT_USER = "Joseph-peemi"
     }
     stages {
         stage("Cleanup Workspace") {
-            steps {
-                cleanWs()
-            }
+            steps { cleanWs() }
         }
         stage("Checkout GitOps Repo") {
             steps {
-                git branch: 'main',
-                    credentialsId: env.GIT_CREDENTIALS,
-                    url: 'https://github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git',
+                        credentialsId: env.GIT_CREDENTIALS
+                    ]]
+                ])
             }
         }
         stage("Update Deployment File") {
             steps {
                 script {
                     sh """
-                        sed -i 's|image: ${APP_NAME}:.*|image: ${IMAGE_NAME}:${RELEASE_VERSION}|g' deployment.yaml
+                        sed -i 's|image: ${APP_NAME}:.*|image: ${params.IMAGE_TAG}|g' deployment.yaml
+                        cat deployment.yaml   # Optional: show the change for debugging
                     """
                 }
             }
@@ -42,7 +41,7 @@ pipeline {
                         git config user.name "${GIT_USER}"
                         git config user.email "peemijoe9522@gmail.com"
                         git add deployment.yaml
-                        git commit -m "Updated deployment image to version ${RELEASE_VERSION}" || echo "No changes to commit"
+                        git commit -m "Updated deployment image to ${params.IMAGE_TAG}" || echo "No changes to commit"
                     """
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                         sh "git push https://${GIT_USER}:${GIT_PASS}@github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git HEAD:main"
