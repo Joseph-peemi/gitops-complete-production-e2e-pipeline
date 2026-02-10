@@ -47,7 +47,7 @@ pipeline {
                         git commit -m "Updated deployment image to ${params.IMAGE_TAG}" || echo "No changes to commit"
                     """
                     withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                        sh '''git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git HEAD:main'''
+                        sh 'git push https://Joseph-peemi:${GIT_PASSWORD}@github.com/Joseph-peemi/gitops-complete-production-e2e-pipeline.git HEAD:main'
                     }
                 }
             }
