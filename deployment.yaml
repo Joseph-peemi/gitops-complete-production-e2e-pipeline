@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   annotations:
     argocd.argoproj.io/tracking-id: >-
-      gitops-complete-production-e2e-pipeline:apps/Deployment:default/Terraform-Pipeline-Production
+      gitops-complete-production-e2e-pipeline:apps/Deployment:default/terraform-pipeline-production
   labels:
-    app: Terraform-Pipeline-Production
-  name: Terraform-Pipeline-Production-deployment
+    app: terraform-pipeline-production
+  name: terraform-pipeline-production-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Terraform-Pipeline-Production
+      app: terraform-pipeline-production
   template:
     metadata:
       labels:
-        app: Terraform-Pipeline-Production
+        app: terraform-pipeline-production
     spec:
       containers:
-        - name: Terraform-Pipeline-Production
+        - name: terraform-pipeline-production
           image: abuchijoe/register-app-pipeline:latest
 
           ports:

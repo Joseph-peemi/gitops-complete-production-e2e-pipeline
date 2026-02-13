@@ -4,7 +4,7 @@ pipeline {
         string(name: 'IMAGE_TAG', defaultValue: 'abuchijoe/register-app-pipeline:latest', description: 'Docker image tag to deploy')
     }
     environment {
-        APP_NAME = 'Terraform-Pipeline-Production'
+        APP_NAME = 'terraform-pipeline-production'
         GIT_CREDENTIALS = 'github'
         GIT_USER = 'Joseph-peemi'
     }
