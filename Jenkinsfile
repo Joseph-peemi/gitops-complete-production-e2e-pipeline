@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Jenkins-agent' }
+    agent { label 'Jenkins-Agent' }
     parameters {
         string(name: 'IMAGE_TAG', defaultValue: 'abuchijoe/register-app-pipeline:latest', description: 'Docker image tag to deploy')
     }
